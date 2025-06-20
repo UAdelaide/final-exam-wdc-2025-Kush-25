@@ -62,7 +62,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
 // --- New Logout Route ---
 router.post('/logout', (req, res) => {
   // Destroy the session
