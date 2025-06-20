@@ -12,7 +12,23 @@
 </head>
 
 <body>
+    <div id="app">
+        <h1>Dog of the Day</h1>
 
+        <!-- Break accessibility: missing alt text -->
+        <img :src="dogImageUrl" />
+
+        <p>Name: <span style="font-size:5px; color:cyan;">Fluffy</span></p>
+
+        <!-- Break kinematic load: very small refresh button, placed far down right -->
+        <button id="refresh-button" @click="fetchDog">Refresh Dog</button>
+
+        <!-- Break cognitive load: lots of random info -->
+        <p style="font-size: 4px; background: black; color: white;">
+        Tip: Did you know dogs can hear 4x better than humans? Also, beware of dog allergies! This page uses the Dog CEO API. Visit our <a href="http://example.com" style="color:lime;">homepage</a> for more.
+        </p>
+
+    </div>
 <script>
 
 </script>
