@@ -15,10 +15,8 @@ async function main() {
       database: 'DogWalkService'
     });
 
-    // Make DB accessible inside routes via req.app.locals.db
     app.locals.db = db;
 
-    // Mount routes at /api
     app.use('/api', routes);
 
     // Start the server
