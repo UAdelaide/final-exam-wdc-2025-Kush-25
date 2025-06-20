@@ -1,6 +1,6 @@
 -- Create the database (this is a dummy file i generated to check if the server is working etc)
-CREATE DATABASE IF NOT EXISTS dog_walk_service;
-USE dog_walk_service;
+CREATE DATABASE IF NOT EXISTS DogWalkService;
+USE DogWalkService;
 
 -- Users table
 CREATE TABLE IF NOT EXISTS Users (
