@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// --- New Logout Route ---
+// New Logout Route
 router.post('/logout', (req, res) => {
   // Destroy the session
   req.session.destroy((err) => {
@@ -77,6 +77,6 @@ router.post('/logout', (req, res) => {
     res.json({ message: 'Logged out successfully.' });
   });
 });
-// --- End New Logout Route ---
+//End New Logout Route
 
 module.exports = router;
