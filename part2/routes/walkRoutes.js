@@ -81,6 +81,6 @@ router.get('/owner-dogs/:ownerId', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch dogs for owner.' });
   }
 });
-// END NEW ROUTE
+// End of new route
 
 module.exports = router;

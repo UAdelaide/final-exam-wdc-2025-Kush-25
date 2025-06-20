@@ -77,6 +77,6 @@ router.post('/logout', (req, res) => {
     res.json({ message: 'Logged out successfully.' });
   });
 });
-//End New Logout Route
+//End of New Logout Route
 
 module.exports = router;
