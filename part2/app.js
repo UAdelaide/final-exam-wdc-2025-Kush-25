@@ -5,7 +5,7 @@ const session = require('express-session');
 const app = express();
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'a_default_secret_please_change_this_in_env', // IMPORTANT: CHANGE THIS IN YOUR .ENV
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24hr
