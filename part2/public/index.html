@@ -11,32 +11,21 @@
 
   <div id="app" class="container py-5">
     <h1 class="mb-4 text-primary">{{ message }}</h1>
-    <p class="lead">Connect with trusted walkers for your beloved dog!</p>
 
-    <div class="card my-4">
-      <div class="card-header bg-primary text-white">
-        Login
+    <form @submit.prevent="login" class="col-md-6 mx-auto">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" v-model="loginForm.email" required>
       </div>
-      <div class="card-body">
-        <form @submit.prevent="login">
-          <div class="mb-3">
-            <label for="email" class="form-label">Username</label>
-            <input type="email" class="form-control" id="email" v-model="loginForm.email" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" v-model="loginForm.password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" v-model="loginForm.password" required>
       </div>
-    </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
 
-    <div v-if="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
-    <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
-
-    <a href="owner-dashboard.html" class="btn btn-outline-primary me-2 d-none">Owner Dashboard</a>
-    <a href="walker-dashboard.html" class="btn btn-outline-success d-none">Walker Dashboard</a>
+    <div v-if="successMessage" class="alert alert-success mt-3 col-md-6 mx-auto">{{ successMessage }}</div>
+    <div v-if="errorMessage" class="alert alert-danger mt-3 col-md-6 mx-auto">{{ errorMessage }}</div>
   </div>
 
   <script>
