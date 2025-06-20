@@ -78,8 +78,7 @@ router.post('/:id/apply', async (req, res) => {
 router.get('/owner-dogs/:ownerId', async (req, res) => {
   const ownerId = req.params.ownerId;
 
-  // Basic security check: ensure the requested ownerId matches the logged-in user's ID
-  // This is crucial to prevent users from fetching other owners' dog lists.
+    // Only owner can match their dog
   if (!req.session.user || req.session.user.user_id != ownerId || req.session.user.role !== 'owner') {
     return res.status(403).json({ error: 'Unauthorized to view these dogs.' });
   }
