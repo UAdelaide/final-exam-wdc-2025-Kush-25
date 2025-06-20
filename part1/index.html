@@ -5,10 +5,30 @@
     <title>DogOfDaDay</title>
     <script src="https://unpkg.com/vue@3"></script>
 
-    <!--CSS Part-->
-    <style>
+<!--CSS Part-->
+<style>
+    /* Break cognitive load: cluttered UI */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f06, #f79);
+      color: yellow;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% {opacity: 1;}
+      50% {opacity: 0.5;}
+    }
 
-    </style>
+    /* Break kinematic load: tiny buttons far apart */
+    #refresh-button {
+      font-size: 8px;
+      position: absolute;
+      top: 500px;
+      left: 900px;
+      padding: 2px 4px;
+    }
+</style>
+
 </head>
 
 <body>
