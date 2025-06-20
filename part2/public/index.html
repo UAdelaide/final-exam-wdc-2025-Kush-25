@@ -13,16 +13,86 @@
     <h1 class="mb-4 text-primary">{{ message }}</h1>
     <p class="lead">Connect with trusted walkers for your beloved dog!</p>
 
-    <a href="owner-dashboard.html" class="btn btn-outline-primary me-2">Owner Dashboard</a>
-    <a href="walker-dashboard.html" class="btn btn-outline-success">Walker Dashboard</a>
+    <div class="card my-4">
+      <div class="card-header bg-primary text-white">
+        Login
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="login">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" v-model="loginForm.email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" v-model="loginForm.password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div v-if="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+    <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+
+    <a href="owner-dashboard.html" class="btn btn-outline-primary me-2 d-none">Owner Dashboard</a>
+    <a href="walker-dashboard.html" class="btn btn-outline-success d-none">Walker Dashboard</a>
   </div>
 
   <script>
-    const { createApp } = Vue;
+    const { createApp, ref } = Vue;
     createApp({
-      data() {
+      setup() {
+        const message = ref('Welcome to the Dog Walking Service!');
+        const loginForm = ref({
+          email: '',
+          password: ''
+        });
+        const successMessage = ref('');
+        const errorMessage = ref('');
+
+        async function login() {
+          try {
+            const res = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(loginForm.value)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              successMessage.value = data.message;
+              errorMessage.value = '';
+              // Redirect based on role
+              if (data.user.role === 'owner') {
+                window.location.href = 'owner-dashboard.html';
+              } else if (data.user.role === 'walker') {
+                window.location.href = 'walker-dashboard.html';
+              } else {
+                // Default redirect or error if role is not recognized
+                console.warn('Unknown user role:', data.user.role);
+                window.location.href = 'index.html'; // Stay on home page or redirect to a generic dashboard
+              }
+            } else {
+              errorMessage.value = data.error || 'Login failed.';
+              successMessage.value = '';
+            }
+          } catch (err) {
+            errorMessage.value = 'An error occurred during login.';
+            successMessage.value = '';
+            console.error('Login error:', err);
+          }
+        }
+
         return {
-          message: 'Welcome to the Dog Walking Service!'
+          message,
+          loginForm,
+          successMessage,
+          errorMessage,
+          login
         };
       }
     }).mount('#app');
