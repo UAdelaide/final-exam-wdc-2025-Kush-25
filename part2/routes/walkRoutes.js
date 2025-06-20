@@ -74,7 +74,7 @@ router.post('/:id/apply', async (req, res) => {
   }
 });
 
-// --- NEW ROUTE: Get Dogs by Owner ID ---
+// Get Dogs by Owner ID
 router.get('/owner-dogs/:ownerId', async (req, res) => {
   const ownerId = req.params.ownerId;
 
