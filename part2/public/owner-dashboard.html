@@ -9,7 +9,10 @@
 </head>
 <body class="bg-light">
   <div id="app" class="container py-4">
-    <h1 class="mb-4 text-primary">Owner Dashboard</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="mb-0 text-primary">Owner Dashboard</h1>
+      <button @click="logout" class="btn btn-danger">Logout</button>
+    </div>
 
     <!-- Walk request form -->
     <div class="card mb-4">
@@ -83,9 +86,12 @@
         async function loadWalks() {
           try {
             const res = await fetch('/api/walks');
+            // Assuming the /api/walks endpoint will return only walks for the logged-in owner
+            // If not, you might need to filter client-side or modify the backend query.
             walks.value = await res.json();
           } catch (err) {
             error.value = 'Failed to load walk requests';
+            console.error('Error loading walks:', err);
           }
         }
 
@@ -108,12 +114,42 @@
               duration_minutes: '',
               location: ''
             };
-            loadWalks();
+            loadWalks(); // Reload walks after a successful submission
           } catch (err) {
             error.value = err.message;
             message.value = '';
+            console.error('Error submitting walk request:', err);
           }
         }
+
+        // --- New Logout Functionality ---
+        const logout = async () => {
+          try {
+            const res = await fetch('/api/users/logout', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (res.ok) {
+              message.value = 'Logged out successfully. Redirecting...';
+              // Redirect to the login page after a short delay
+              setTimeout(() => {
+                window.location.href = 'index.html';
+              }, 1500); // Redirect after 1.5 seconds
+            } else {
+              const data = await res.json();
+              error.value = data.error || 'Logout failed.';
+              message.value = '';
+            }
+          } catch (err) {
+            error.value = 'An error occurred during logout.';
+            message.value = '';
+            console.error('Logout error:', err);
+          }
+        };
+        // --- End New Logout Functionality ---
 
         onMounted(() => {
           loadWalks();
@@ -124,7 +160,8 @@
           walks,
           message,
           error,
-          submitWalkRequest
+          submitWalkRequest,
+          logout // Make logout function available to the template
         };
       }
     }).mount('#app');
