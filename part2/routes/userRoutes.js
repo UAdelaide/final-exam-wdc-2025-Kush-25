@@ -72,8 +72,6 @@ router.post('/logout', (req, res) => {
     }
 
     // Clear the session cookie from the client's browser
-    // 'connect.sid' is the default name for express-session's cookie
-    // If you configured a different name in app.js, use that name here.
     res.clearCookie('connect.sid');
 
     res.json({ message: 'Logged out successfully.' });
