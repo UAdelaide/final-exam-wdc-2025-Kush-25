@@ -24,15 +24,6 @@ router.post('/', async (req, res) => {
   const { dog_id, requested_time, duration_minutes, location } = req.body;
 
   try {
-    // Optional: Add a check here to ensure the dog_id belongs to the logged-in owner
-    // if (!req.session.user || req.session.user.role !== 'owner') {
-    //   return res.status(403).json({ error: 'Unauthorized' });
-    // }
-    // const [dogCheck] = await db.query('SELECT owner_id FROM Dogs WHERE dog_id = ?', [dog_id]);
-    // if (dogCheck.length === 0 || dogCheck[0].owner_id !== req.session.user.user_id) {
-    //   return res.status(403).json({ error: 'Dog does not belong to this owner.' });
-    // }
-
     const [result] = await db.query(`
       INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location)
       VALUES (?, ?, ?, ?)
@@ -51,10 +42,6 @@ router.post('/:id/apply', async (req, res) => {
   const { walker_id } = req.body; // In a real app, walker_id would come from session
 
   try {
-    // Check if the walker_id is actually the logged-in walker (important security check)
-    // if (!req.session.user || req.session.user.role !== 'walker' || req.session.user.user_id !== walker_id) {
-    //   return res.status(403).json({ error: 'Unauthorized application' });
-    // }
 
     await db.query(`
       INSERT INTO WalkApplications (request_id, walker_id)
