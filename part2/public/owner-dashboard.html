@@ -22,8 +22,14 @@
       <div class="card-body">
         <form @submit.prevent="submitWalkRequest">
           <div class="mb-3">
-            <label class="form-label">Dog ID</label>
-            <input v-model="form.dog_id" type="number" class="form-control" required>
+            <label class="form-label">Dog</label>
+            <!-- THIS IS THE CHANGE: Replaced input with select dropdown -->
+            <select v-model="form.dog_id" class="form-select" required>
+              <option value="" disabled>Select a dog</option>
+              <option v-for="dog in sortedOwnerDogs" :key="dog.dog_id" :value="dog.dog_id">
+                {{ dog.name }}
+              </option>
+            </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Requested Date & Time</label>
@@ -68,7 +74,7 @@
   </div>
 
   <script>
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, ref, onMounted, computed } = Vue;
 
     createApp({
       setup() {
@@ -80,14 +86,65 @@
         });
 
         const walks = ref([]);
+        const ownerDogs = ref([]); // New ref to store owner's dogs
+        const currentOwnerId = ref(null); // New ref to store the logged-in owner's ID
         const message = ref('');
         const error = ref('');
 
+        // Computed property to sort dogs alphabetically
+        const sortedOwnerDogs = computed(() => {
+          return [...ownerDogs.value].sort((a, b) => a.name.localeCompare(b.name));
+        });
+
+        // Function to fetch the logged-in owner's ID and role
+        async function fetchOwnerId() {
+          try {
+            const res = await fetch('/api/users/me'); // Get logged-in user details
+            if (res.ok) {
+              const userData = await res.json();
+              if (userData.role === 'owner') {
+                currentOwnerId.value = userData.user_id;
+              } else {
+                // If not an owner, redirect or show error
+                error.value = 'Access Denied: You must be an owner to view this page.';
+                setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+              }
+            } else {
+              // Not logged in or session expired
+              throw new Error('Not logged in or session expired. Please login.');
+            }
+          } catch (err) {
+            error.value = err.message || 'Failed to get user ID. Please login.';
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+          }
+        }
+
+        // Function to load dogs for the current owner
+        async function loadOwnerDogs() {
+          if (!currentOwnerId.value) {
+            error.value = 'Owner ID not available. Cannot load dogs.';
+            return;
+          }
+          try {
+            // Calling the new backend endpoint to get dogs for this owner
+            const res = await fetch(`/api/walks/owner-dogs/${currentOwnerId.value}`);
+            if (!res.ok) throw new Error('Failed to load owner dogs.');
+            ownerDogs.value = await res.json();
+            // Pre-select the first dog if available and no dog is selected
+            if (ownerDogs.value.length > 0 && !form.value.dog_id) {
+              form.value.dog_id = ownerDogs.value[0].dog_id;
+            }
+          } catch (err) {
+            error.value = err.message;
+            console.error('Error loading owner dogs:', err);
+          }
+        }
+
         async function loadWalks() {
+          // This function might need adjustment on backend if it's not already filtering by owner
+          // For now, assuming it fetches all walks or is filtered by session on backend
           try {
             const res = await fetch('/api/walks');
-            // Assuming the /api/walks endpoint will return only walks for the logged-in owner
-            // If not, you might need to filter client-side or modify the backend query.
             walks.value = await res.json();
           } catch (err) {
             error.value = 'Failed to load walk requests';
@@ -108,8 +165,9 @@
 
             message.value = result.message;
             error.value = '';
+            // Reset dog_id to the first dog after submission
             form.value = {
-              dog_id: '',
+              dog_id: ownerDogs.value.length > 0 ? ownerDogs.value[0].dog_id : '',
               requested_time: '',
               duration_minutes: '',
               location: ''
@@ -122,7 +180,6 @@
           }
         }
 
-        // --- New Logout Functionality ---
         const logout = async () => {
           try {
             const res = await fetch('/api/users/logout', {
@@ -134,10 +191,9 @@
 
             if (res.ok) {
               message.value = 'Logged out successfully. Redirecting...';
-              // Redirect to the login page after a short delay
               setTimeout(() => {
                 window.location.href = 'index.html';
-              }, 1500); // Redirect after 1.5 seconds
+              }, 1500);
             } else {
               const data = await res.json();
               error.value = data.error || 'Logout failed.';
@@ -149,19 +205,25 @@
             console.error('Logout error:', err);
           }
         };
-        // --- End New Logout Functionality ---
 
-        onMounted(() => {
-          loadWalks();
+        // On mount, fetch owner ID first, then load dogs and walks
+        onMounted(async () => {
+          await fetchOwnerId(); // This must complete first to get currentOwnerId
+          if (currentOwnerId.value) { // Only proceed if owner ID was successfully fetched
+            await loadOwnerDogs();
+            await loadWalks();
+          }
         });
 
         return {
           form,
           walks,
+          ownerDogs, // Keeping for internal use/debugging, not directly bound to template now
+          sortedOwnerDogs, // This is the computed property used for the <select> v-for
           message,
           error,
           submitWalkRequest,
-          logout // Make logout function available to the template
+          logout
         };
       }
     }).mount('#app');
