@@ -31,7 +31,7 @@
               <strong>Location:</strong> {{ walk.location }}<br>
               <strong>Owner:</strong> {{ walk.owner_name }}
             </p>
-            <button type=button class="btn btn-outline-success" @click="applyToWalk(walk.request_id)">Apply</button>
+            <button type="button" class="btn btn-outline-success" @click="applyToWalk(walk.request_id)">Apply</button>
           </div>
         </div>
       </div>
@@ -47,8 +47,19 @@
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
-        // const user = 3; // Placeholder for walker_id. This should ideally come from session/authentication.
         const walkerId = ref(null);
+
+        async function getCurrentUser() {
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Not logged in');
+            const userData = await res.json();
+            walkerId.value = userData.user_id;
+          } catch (err) {
+            error.value = 'Failed to get current user info';
+            console.error(err);
+          }
+        }
 
         async function loadWalkRequests() {
           try {
@@ -62,20 +73,23 @@
         }
 
         async function applyToWalk(requestId) {
+          if (!walkerId.value) {
+            error.value = 'Walker ID not loaded.';
+            return;
+          }
+
           try {
-            // In a real app, 'user' (walker_id) would come from the authenticated session
-            // For now, it's a hardcoded placeholder.
             const res = await fetch(`/api/walks/${requestId}/apply`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ walker_id: user })
+              body: JSON.stringify({ walker_id: walkerId.value })
             });
             const result = await res.json();
 
             if (!res.ok) throw new Error(result.error || 'Application failed');
             message.value = result.message;
             error.value = '';
-            await loadWalkRequests(); // Reload requests to reflect changes
+            await loadWalkRequests(); // Reload requests
           } catch (err) {
             error.value = err.message;
             message.value = '';
@@ -83,7 +97,6 @@
           }
         }
 
-        // --- New Logout Functionality ---
         const logout = async () => {
           try {
             const res = await fetch('/api/users/logout', {
@@ -95,10 +108,9 @@
 
             if (res.ok) {
               message.value = 'Logged out successfully. Redirecting...';
-              // Redirect to the login page after a short delay
               setTimeout(() => {
                 window.location.href = 'index.html';
-              }, 1500); // Redirect after 1.5 seconds
+              }, 1500);
             } else {
               const data = await res.json();
               error.value = data.error || 'Logout failed.';
@@ -110,9 +122,9 @@
             console.error('Logout error:', err);
           }
         };
-        // --- End New Logout Functionality ---
 
         onMounted(() => {
+          getCurrentUser(); // NEW: Get walker ID from session
           loadWalkRequests();
         });
 
@@ -121,7 +133,7 @@
           message,
           error,
           applyToWalk,
-          logout // Make logout function available to the template
+          logout
         };
       }
     }).mount('#app');
