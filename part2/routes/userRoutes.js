@@ -58,9 +58,28 @@ router.post('/login', async (req, res) => {
 
     res.json({ message: 'Login successful', user: rows[0] });
   } catch (error) {
-    console.error('Login error:', error); // Log the actual error for debugging
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed due to server error.' });
   }
 });
+
+// --- New Logout Route ---
+router.post('/logout', (req, res) => {
+  // Destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Session destruction error:', err);
+      return res.status(500).json({ error: 'Failed to logout.' });
+    }
+
+    // Clear the session cookie from the client's browser
+    // 'connect.sid' is the default name for express-session's cookie
+    // If you configured a different name in app.js, use that name here.
+    res.clearCookie('connect.sid');
+
+    res.json({ message: 'Logged out successfully.' });
+  });
+});
+// --- End New Logout Route ---
 
 module.exports = router;
