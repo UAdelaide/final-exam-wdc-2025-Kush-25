@@ -22,10 +22,10 @@
       <div class="card-body">
         <form @submit.prevent="submitWalkRequest">
           <div class="mb-3">
-            <label class="form-label">DogHAHAHA</label>
+            <label class="form-label">Select Your Dog</label>
             <!-- THIS IS THE CHANGE: Replaced input with select dropdown -->
             <select v-model="form.dog_id" class="form-select" required>
-              <option value="" disabled>Select a dog</option>
+              <option value="" disabled>--</option>
               <option v-for="dog in sortedOwnerDogs" :key="dog.dog_id" :value="dog.dog_id">
                 {{ dog.name }}
               </option>
