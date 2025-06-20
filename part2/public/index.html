@@ -14,8 +14,7 @@
 
     <form @submit.prevent="login" class="col-md-6 mx-auto">
       <div class="mb-3">
-        <label for="email" class="form-label">Username</label>
-        <input type="email" class="form-control" id="email" v-model="loginForm.email" required>
+        <label for="email" class="form-label">Username</label> <input type="email" class="form-control" id="email" v-model="loginForm.email" required>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -34,7 +33,7 @@
       setup() {
         const message = ref('Welcome to the Dog Walking Service!');
         const loginForm = ref({
-          email: '',
+          email: '', // Keep this as 'email' because the backend expects it this way
           password: ''
         });
         const successMessage = ref('');
