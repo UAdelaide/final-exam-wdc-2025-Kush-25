@@ -177,7 +177,7 @@
         const randomDogImage3 = ref('');
         const randomDogImage4 = ref('');
         const randomDogImage5 = ref('');
-        async function fetchRandomDogImage() {
+        async function fetchRandomDogImage(img) {
           try {
             const res = await fetch('https://dog.ceo/api/breeds/image/random');
             const data = await res.json();
