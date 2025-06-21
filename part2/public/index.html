@@ -172,20 +172,33 @@
           }
         }
 
-        const randomDogImage = ref('');
+        const dogs = ref([
+        { id: 1, name: 'Buddy', size: 'medium', ownerId: 1, photo: '' },
+        { id: 2, name: 'Lucy', size: 'small', ownerId: 1, photo: '' },
+        { id: 3, name: 'Rocky', size: 'large', ownerId: 3, photo: '' },
+        { id: 4, name: 'Daisy', size: 'medium', ownerId: 3, photo: '' },
+        { id: 5, name: 'Milo', size: 'small', ownerId: 3, photo: '' },
+      ]);
+
         async function fetchRandomDogImage() {
           try {
             const res = await fetch('https://dog.ceo/api/breeds/image/random');
             const data = await res.json();
-            if (data.status === 'success') {
-              randomDogImage.value = data.message;
-            }
-          } catch (err) {
-            console.error('Failed to fetch random dog image:', err);
+            if (data.status === 'success') return data.message;
+          } catch (e) {
+            console.error('Failed to fetch dog image:', e);
+          }
+          return '';
+        }
+
+        async function assignRandomPhotos() {
+          for (const dog of dogs.value) {
+            dog.photo = await fetchRandomDogImage();
           }
         }
 
-        fetchRandomDogImage();
+        assignRandomPhotos();
+
 
         return {
           message,
