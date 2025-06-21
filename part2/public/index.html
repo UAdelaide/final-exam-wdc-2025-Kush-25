@@ -178,8 +178,7 @@
         { id: 3, name: 'Rocky', size: 'large', ownerId: 3, photo: '' },
         { id: 4, name: 'Daisy', size: 'medium', ownerId: 3, photo: '' },
         { id: 5, name: 'Milo', size: 'small', ownerId: 3, photo: '' },
-      ]);
-
+        ]);
         async function fetchRandomDogImage() {
           try {
             const res = await fetch('https://dog.ceo/api/breeds/image/random');
@@ -190,13 +189,11 @@
           }
           return '';
         }
-
         async function assignRandomPhotos() {
           for (const dog of dogs.value) {
             dog.photo = await fetchRandomDogImage();
           }
         }
-
         assignRandomPhotos();
 
 
