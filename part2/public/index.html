@@ -198,13 +198,13 @@
           return '';
         }
        async function assignRandomPhotos() {
-        const updatedDogs = [];
-        for (const dog of dogs.value) {
-          const photo = await fetchRandomDogImage();
-          updatedDogs.push({ ...dog, photo });
+          const updatedDogs = [];
+          for (const dog of dogs.value) {
+            const photo = await fetchRandomDogImage();
+            updatedDogs.push({ ...dog, photo });
+          }
+          dogs.value = updatedDogs;  // <-- replace the whole array so Vue sees the update
         }
-        dogs.value = updatedDogs;  // <-- replace the whole array so Vue sees the update
-      }
         assignRandomPhotos();
 
 
