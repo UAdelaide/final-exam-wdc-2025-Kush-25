@@ -172,7 +172,20 @@
           }
         }
 
-        
+        const randomDogImage = ref('');
+        async function fetchRandomDogImage() {
+          try {
+            const res = await fetch('https://dog.ceo/api/breeds/image/random');
+            const data = await res.json();
+            if (data.status === 'success') {
+              randomDogImage.value = data.message;
+            }
+          } catch (err) {
+            console.error('Failed to fetch random dog image:', err);
+          }
+        }
+
+        fetchRandomDogImage();
 
         return {
           message,
