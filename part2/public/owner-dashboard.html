@@ -107,7 +107,7 @@
               } else {
                 // If not an owner, redirect or show error
                 error.value = 'Access Denied: You must be an owner to view this page.';
-                setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+                window.location.href = 'index.html';
               }
             } else {
               // Not logged in or session expired
@@ -115,7 +115,7 @@
             }
           } catch (err) {
             error.value = err.message || 'Failed to get user ID. Please login.';
-            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+            window.location.href = 'index.html';
           }
         }
 
