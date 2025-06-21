@@ -82,7 +82,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr>
+        <tr>
           <th scope="row">1</th>
           <td>Buddy</td>
           <td>medium</td>
@@ -116,15 +116,7 @@
           <td>small</td>
           <td>3</td>
           <td><img :src="randomDogImage" alt="Random Dog" style="height: 65px; width: auto;"/></td>
-        </tr> -->
-        <tr v-for="dog in dogs" :key="dog.id">
-          <th scope="row">{{ dog.id }}</th>
-          <td>{{ dog.name }}</td>
-          <td>{{ dog.size }}</td>
-          <td>{{ dog.ownerId }}</td>
-          <td><img :src="dog.photo" alt="Dog Photo" style="height: 65px; width: auto;" /></td>
         </tr>
-
       </tbody>
     </table>
     </div>
@@ -180,33 +172,7 @@
           }
         }
 
-        const dogs = ref([
-        { id: 1, name: 'Buddy', size: 'medium', ownerId: 1, photo: '' },
-        { id: 2, name: 'Lucy', size: 'small', ownerId: 1, photo: '' },
-        { id: 3, name: 'Rocky', size: 'large', ownerId: 3, photo: '' },
-        { id: 4, name: 'Daisy', size: 'medium', ownerId: 3, photo: '' },
-        { id: 5, name: 'Milo', size: 'small', ownerId: 3, photo: '' },
-        ]);
-        async function fetchRandomDogImage() {
-          try {
-            const res = await fetch('https://dog.ceo/api/breeds/image/random');
-            const data = await res.json();
-            if (data.status === 'success') return data.message;
-          } catch (e) {
-            console.error('Failed to fetch dog image:', e);
-          }
-          return '';
-        }
-       async function assignRandomPhotos() {
-          const updatedDogs = [];
-          for (const dog of dogs.value) {
-            const photo = await fetchRandomDogImage();
-            updatedDogs.push({ ...dog, photo });
-          }
-          dogs.value = updatedDogs;  // <-- replace the whole array so Vue sees the update
-        }
-        assignRandomPhotos();
-
+        
 
         return {
           message,
@@ -214,7 +180,6 @@
           successMessage,
           errorMessage,
           login,
-          dogs,
           randomDogImage
         };
       }
