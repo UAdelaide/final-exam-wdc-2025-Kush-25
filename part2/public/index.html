@@ -81,13 +81,22 @@
           <th scope="col"><b>Photo</b></th>
         </tr>
       </thead>
-      <tbody>
+      <!-- <tbody>
         <tr>
           <th scope="row">1</th>
           <td>Buddy</td>
           <td>medium</td>
           <td>1</td>
           <td><img :src="randomDogImage" alt="Random Dog" style="height: 60px; width: auto;"/></td>
+        </tr>
+      </tbody> -->
+      <tbody>
+        <tr v-for="(dog, index) in dogs" :key="index">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ dog.dog_name }}</td>
+          <td>{{ dog.size }}</td>
+          <td>{{ dog.owner_username }}</td>
+          <td><img :src="dog.photo" alt="Dog Photo" style="height: 60px; width: auto;" /></td>
         </tr>
       </tbody>
     </table>
