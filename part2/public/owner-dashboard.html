@@ -206,7 +206,7 @@
           }
         };
 
-        
+
         onMounted(async () => {
           await fetchOwnerId(); // This must complete first to get currentOwnerId
           if (currentOwnerId.value) { // Only proceed if owner ID was successfully fetched
