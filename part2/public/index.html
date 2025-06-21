@@ -165,8 +165,36 @@
             console.error('Failed to fetch random dog image:', err);
           }
         }
-
         fetchRandomDogImage();
+
+        const dogs = ref([]);
+
+        async function fetchDogs() {
+          try {
+            const res = await fetch('/api/dogs');
+            const data = await res.json();
+
+            // Add a random photo to each dog
+            const dogsWithPhotos = await Promise.all(
+              data.map(async (dog) => {
+                try {
+                  const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
+                  const imgData = await imgRes.json();
+                  return { ...dog, photo: imgData.message };
+                } catch {
+                  return { ...dog, photo: '' }; // fallback
+                }
+              })
+            );
+
+            dogs.value = dogsWithPhotos;
+          } catch (err) {
+            console.error('Failed to fetch dogs:', err);
+          }
+        }
+
+        fetchDogs();
+
 
         return {
           message,
