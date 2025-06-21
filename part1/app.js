@@ -7,7 +7,7 @@ const PORT = 3000;
 
 async function main() {
   try {
-    // Connect to MySQL
+    // Connecting to MySQL
     const db = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
@@ -17,7 +17,7 @@ async function main() {
 
     app.locals.db = db;
 
-    // Insert test data
+    // Inserting test data
     await db.execute(`
       INSERT IGNORE INTO Users (username, email, password_hash, role)
       VALUES
@@ -40,7 +40,7 @@ async function main() {
         ((SELECT dog_id FROM Dogs WHERE name = 'Bella'), '2025-06-10 09:30:00', 45, 'Beachside Ave', 'accepted')
     `);
 
-    // Mount routes
+    // Mounting routes
     app.use('/api', routes);
 
     // Start server
