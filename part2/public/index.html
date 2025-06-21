@@ -168,7 +168,6 @@
         fetchRandomDogImage();
 
         const dogs = ref([]);
-
         async function fetchDogs() {
           try {
             const res = await fetch('/api/dogs');
@@ -192,7 +191,6 @@
             console.error('Failed to fetch dogs:', err);
           }
         }
-
         fetchDogs();
 
 
@@ -202,7 +200,8 @@
           successMessage,
           errorMessage,
           login,
-          randomDogImage
+          randomDogImage,
+          dogs
         };
       }
     }).mount('#app');
