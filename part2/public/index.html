@@ -10,7 +10,7 @@
 <body class="bg-light">
 
   <div id="app" class="container py-5">
-    <h1 class="mb-4 text-primary">{{ message }}</h1>
+    <h1 class="mb-4 text-primary" v-html>{{ message }}</h1>
 
     <form @submit.prevent="login" class="col-md-6 mx-auto">
       <div class="mb-3">
