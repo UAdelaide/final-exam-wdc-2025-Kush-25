@@ -177,12 +177,12 @@
         const randomDogImage3 = ref('');
         const randomDogImage4 = ref('');
         const randomDogImage5 = ref('');
-        async function fetchRandomDogImage(img) {
+        async function fetchRandomDogImage(imgHere) {
           try {
             const res = await fetch('https://dog.ceo/api/breeds/image/random');
             const data = await res.json();
             if (data.status === 'success') {
-              randomDogImage.value = data.message;
+              imgHere.value = data.message;
             }
           } catch (err) {
             console.error('Failed to fetch random dog image:', err);
