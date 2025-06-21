@@ -11,7 +11,7 @@ async function main() {
     const db = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '', // <- put your real password here
+      password: '', // no password required for task
       database: 'DogWalkService'
     });
 
