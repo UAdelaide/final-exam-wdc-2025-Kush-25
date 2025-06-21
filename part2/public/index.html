@@ -68,33 +68,10 @@
 
     <div v-if="successMessage" class="alert alert-success mt-3 col-md-6 mx-auto">{{ successMessage }}</div>
     <div v-if="errorMessage" class="alert alert-danger mt-3 col-md-6 mx-auto">{{ errorMessage }}</div>
+
+
+
   </div>
-
-  <h2 class="mx-auto" style="text-align: left; width: fit-content;">All Registered Dogs</h2>
-  <div class="col-md-6 mx-auto mt-5">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col"><b>Dog ID</b></th>
-        <th scope="col"><b>Name</b></th>
-        <th scope="col"><b>Size</b></th>
-        <th scope="col"><b>Owner ID</b></th>
-        <th scope="col"><b>Photo</b></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Buddy</td>
-        <td>medium</td>
-        <td>1</td>
-        <td><img :src="randomDogImage" alt="Random Dog" style="height: 60px; width: auto;"/></td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-
-
 
 
   <script>
