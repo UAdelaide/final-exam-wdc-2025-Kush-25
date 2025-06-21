@@ -24,7 +24,7 @@ async function main() {
         ('alice123', 'alice@example.com', 'hashed123', 'owner'),
         ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
         ('carol123', 'carol@example.com', 'hashed789', 'owner')
-        ('newwalker', 'new@example.com', 'hashed456', 'walker')
+        ('newwalker', 'new@example.com', 'hashednew', 'walker')
     `);
 
     await db.execute(`
