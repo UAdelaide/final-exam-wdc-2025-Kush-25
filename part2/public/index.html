@@ -118,12 +118,12 @@
           <td><img :src="randomDogImage" alt="Random Dog" style="height: 65px; width: auto;"/></td>
         </tr> -->
         <tr v-for="dog in dogs" :key="dog.id">
-  <th scope="row">{{ dog.id }}</th>
-  <td>{{ dog.name }}</td>
-  <td>{{ dog.size }}</td>
-  <td>{{ dog.ownerId }}</td>
-  <td><img :src="dog.photo" alt="Dog Photo" style="height: 65px; width: auto;" /></td>
-</tr>
+          <th scope="row">{{ dog.id }}</th>
+          <td>{{ dog.name }}</td>
+          <td>{{ dog.size }}</td>
+          <td>{{ dog.ownerId }}</td>
+          <td><img :src="dog.photo" alt="Dog Photo" style="height: 65px; width: auto;" /></td>
+        </tr>
 
       </tbody>
     </table>
