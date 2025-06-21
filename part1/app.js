@@ -43,7 +43,7 @@ async function main() {
     // Mounting routes
     app.use('/api', routes);
 
-    // Start server
+    // Starting server
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
     });
